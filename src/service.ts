@@ -104,12 +104,13 @@ export const remove = async (
   if (nodes[0].tags.tenant.toUpperCase() !== tenant.toUpperCase())
     throw new Error("Invalid tenant");
 
-  const osmDel = new Promise((resolve, reject) => {
+  const osmDel = new Promise<void>((resolve, reject) => {
     kappaCores[topic].del(
       nodes[0].id,
       { changeset: nodes[0].changeset },
       function (err) {
         if (err) reject(err);
+        else resolve();
       }
     );
   });
