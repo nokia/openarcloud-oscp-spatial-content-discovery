@@ -1,5 +1,4 @@
 import { Scr } from "./models/scr.interface";
-import request from "request-promise";
 import { Element } from "./models/osm_json.interface";
 import { ScrDto } from "./models/scr.dto";
 import { validateOrReject } from "class-validator";
@@ -17,9 +16,19 @@ import { placekeyToH3, h3ToPlacekey, placekeyToGeo } from "@placekey/placekey";
 
 dotenv.config();
 
-const KAPPA_CORE_DIR: string = process.env.KAPPA_CORE_DIR as string;
-const GEOZONE: string = process.env.GEOZONE as string;
-let TOPICS: string[] = process.env.TOPICS.split(",");
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (value === undefined || value.trim() === "") {
+    throw new Error(
+      `Missing required environment variable: ${name}. Set it in .env or the process environment.`
+    );
+  }
+  return value;
+}
+
+const KAPPA_CORE_DIR: string = requireEnv("KAPPA_CORE_DIR");
+const GEOZONE: string = requireEnv("GEOZONE");
+let TOPICS: string[] = requireEnv("TOPICS").split(",");
 TOPICS = TOPICS.map(function (x) {
   return x.toLowerCase();
 });
