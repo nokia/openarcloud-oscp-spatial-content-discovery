@@ -72,6 +72,22 @@ function sameIgnoreCase(a: string | undefined, b: string): boolean {
   return typeof a === "string" && a.toUpperCase() === b.toUpperCase();
 }
 
+function requireValidH3Index(h3Index: string): void {
+  if (!h3Index || !h3.h3IsValid(h3Index)) {
+    throw new Error("Invalid h3Index");
+  }
+}
+
+/**
+ * kappa-osm only knows OSM primitives (node / way / relation). An SCR is stored
+ * as an OSM *node* (`type === "node"`) at the GeoPose lon/lat; the SCR payload
+ * lives in the node's tags. Those nodes are not OpenStreetMap POIs. Do not change
+ * the on-disk type: existing databases and bbox queries depend on it.
+ */
+function isLiveScr(element: Element): boolean {
+  return element.type === "node" && !element.deleted;
+}
+
 export interface IHash {
   [key: string]: any;
 }
@@ -173,7 +189,7 @@ export const findHex = async (
     h3Index = placekeyToH3("@" + placekeyComponents[1]);
   }
 
-  if (!h3Index) throw new Error("Invalid h3Index");
+  requireValidH3Index(h3Index);
 
   const hexBoundary = h3.h3ToGeoBoundary(h3Index, true);
   const hexPoly = turf.polygon([hexBoundary]);
@@ -201,7 +217,7 @@ export const findHex = async (
     });
   });
 
-  let nodes: Element[] = await osmQuery;
+  let nodes: Element[] = (await osmQuery).filter(isLiveScr);
 
   if (placekey) {
     if (placekeyComponents[0].length > 0) {
@@ -248,7 +264,7 @@ export const findAllTenant = async (
 
   const elements: Element[] = await osmQuery;
 
-  const nodes = elements.filter((element) => element.type === "node");
+  const nodes = elements.filter(isLiveScr);
 
   const nodesAllTenant = nodes.filter(
     (element) => sameIgnoreCase(element.tags.tenant, tenant)
@@ -280,6 +296,7 @@ export const create = async (
   await assertValid(scr);
 
   const node: Element = {
+    // Repurposed OSM node: this is the SCR. Keep type "node" for existing records.
     type: "node",
     changeset: "abcdef",
     lon: scr.content.geopose.position.lon,
@@ -335,6 +352,7 @@ export const update = async (
     throw new Error("Invalid tenant");
 
   const node: Element = {
+    // Repurposed OSM node: this is the SCR. Keep type "node" for existing records.
     type: "node",
     changeset: "abcdef",
     lon: scr.content.geopose.position.lon,
