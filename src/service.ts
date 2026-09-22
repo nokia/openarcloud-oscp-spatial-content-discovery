@@ -226,11 +226,10 @@ export const findHex = async (
   }
 
   if (keywordArr.length > 0) {
-    nodes = nodes.filter((node) => node.tags.content.keywords);
-    nodes = nodes.filter(
-      (node) =>
-        node.tags.content.keywords.filter((x) => keywordArr.includes(x))
-          .length > 0
+    nodes = nodes.filter((node) =>
+      (node.tags.content.keywords || []).some((x) =>
+        keywordArr.includes(String(x).toLowerCase())
+      )
     );
   }
 
