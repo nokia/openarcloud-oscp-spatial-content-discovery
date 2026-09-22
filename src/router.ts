@@ -16,10 +16,12 @@ const AUTH_REQUIRED: boolean = ["1", "true", "yes", "on"].includes(
 const NOAUTH_TENANT = "noauthtest";
 
 function httpStatusForError(message: string): number {
+  if (message && message.startsWith("Validation failed")) {
+    return 400;
+  }
   switch (message) {
     case "No record found":
       return 404;
-    case "Validation failed":
     case "Invalid topic":
     case "Invalid h3Index":
       return 400;
