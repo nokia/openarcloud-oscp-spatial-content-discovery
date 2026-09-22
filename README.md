@@ -26,6 +26,7 @@ Create .env file with required params ex.
 
 ```
 KAPPA_CORE_DIR="data"
+AUTH_REQUIRED=true
 AUTH0_ISSUER=https://scd-oscp.us.auth0.com/
 AUTH0_AUDIENCE=https://scd.oscp.cloudpose.io
 GEOZONE="geo3"
@@ -67,7 +68,8 @@ The project uses a `.env` file to configure both runtime and Docker build settin
 # Data storage directory (relative path, will be mounted into container)
 KAPPA_CORE_DIR=data
 
-# Authentication
+# Authentication (default: true; set false only for local/dev without Auth0)
+AUTH_REQUIRED=true
 AUTH0_ISSUER=https://<your_tenant>.auth0.com/
 AUTH0_AUDIENCE=https://<your_domain>:<your_port>
 
@@ -83,6 +85,7 @@ PORT=8032
 
 **Variable Reference:**
 - `KAPPA_CORE_DIR`: Local directory for persistent kappa-core database files. This folder is mounted as a bind volume into the container at `/app/${KAPPA_CORE_DIR}`.
+- `AUTH_REQUIRED`: When `true` (the default), mutating and tenant routes require a JWT. Set to `false` only for local/dev; writes then use tenant `noauthtest`.
 - `AUTH0_ISSUER`: Auth0 OAuth provider issuer URL.
 - `AUTH0_AUDIENCE`: Auth0 audience identifier (typically your service URL).
 - `GEOZONE`: GeoZone namespace prepended to each swarm topic.
