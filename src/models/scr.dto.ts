@@ -1,16 +1,12 @@
 import { Type } from "class-transformer";
 
 import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  ArrayNotEmpty,
   IsDefined,
   IsLatitude,
   IsLongitude,
   IsUrl,
   IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
   Equals,
   ValidateNested,
@@ -96,9 +92,8 @@ export class ContentDto {
   @IsOptional()
   placekey?: string;
 
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @IsOptional()
-  @ArrayNotEmpty()
   @Type(() => RefDto)
   refs?: RefDto[];
 
@@ -115,11 +110,10 @@ export class ContentDto {
   @IsOptional()
   bbox?: string;
 
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @IsOptional()
-  @ArrayNotEmpty()
   @Type(() => DefDto)
-  definitions?: DefDto[];  
+  definitions?: DefDto[];
 }
 
 export class ScrDto {
