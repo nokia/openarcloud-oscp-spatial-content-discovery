@@ -68,6 +68,10 @@ async function assertValid(value: object): Promise<void> {
   }
 }
 
+function sameIgnoreCase(a: string | undefined, b: string): boolean {
+  return typeof a === "string" && a.toUpperCase() === b.toUpperCase();
+}
+
 export interface IHash {
   [key: string]: any;
 }
@@ -136,7 +140,7 @@ export const remove = async (
 
   if (nodes.length === 0) throw new Error("No record found");
   if (nodes[0].deleted) throw new Error("No record found");
-  if (nodes[0].tags.tenant.toUpperCase() !== tenant.toUpperCase())
+  if (!sameIgnoreCase(nodes[0].tags.tenant, tenant))
     throw new Error("Invalid tenant");
 
   const osmDel = new Promise<void>((resolve, reject) => {
@@ -247,7 +251,7 @@ export const findAllTenant = async (
   const nodes = elements.filter((element) => element.type === "node");
 
   const nodesAllTenant = nodes.filter(
-    (element) => element.tags.tenant === tenant
+    (element) => sameIgnoreCase(element.tags.tenant, tenant)
   );
 
   const mapResponse = (response: Element[]) =>
@@ -327,7 +331,7 @@ export const update = async (
 
   if (nodes.length === 0) throw new Error("No record found");
   if (nodes[0].deleted) throw new Error("No record found");
-  if (nodes[0].tags.tenant.toUpperCase() !== tenant.toUpperCase())
+  if (!sameIgnoreCase(nodes[0].tags.tenant, tenant))
     throw new Error("Invalid tenant");
 
   const node: Element = {
