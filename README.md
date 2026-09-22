@@ -112,7 +112,9 @@ application/vnd.oscp+json; version=1.0;
 
 ## Spatial Content Record (SCR)
 
-GeoPose will be formalized through the [OGC GeoPose Working Group](https://www.ogc.org/projects/groups/geoposeswg). Base version of a Spatial Content Record (expected to evolve):
+GeoPose is standardized in the [OGC GeoPose Working Group](https://www.ogc.org/projects/groups/geoposeswg).
+
+The Spatial Content Record (SCR) schema also allows a [SpatialDDS](https://spatialdds.org/) `FramedPose` (`framedPose`) field. This Spatial Content Discovery service is geographic (kappa-osm nodes need lon/lat), so **`geopose` is required** for all contents. An optional `framedPose` field may be stored as-is and is not validated yet (SpatialDDS is still evolving). FramedPose-only records should be stored in a different content service.
 
 ```js
 export interface Position {
@@ -151,7 +153,8 @@ export interface Content {
   keywords?: string[];
   placekey?: string;
   refs?: Ref[];
-  geopose: GeoPose;
+  geopose: GeoPose; // required here: OSM spatial index is geodetic
+  framedPose?: any; // optional opaque SpatialDDS payload; not interpreted here
   size?: number; 
   bbox?: string;
   definitions?: Def[]; 

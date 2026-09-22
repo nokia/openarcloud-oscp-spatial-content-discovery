@@ -83,6 +83,8 @@ function requireValidH3Index(h3Index: string): void {
  * as an OSM *node* (`type === "node"`) at the GeoPose lon/lat; the SCR payload
  * lives in the node's tags. Those nodes are not OpenStreetMap POIs. Do not change
  * the on-disk type: existing databases and bbox queries depend on it.
+ * This service is geographic: geopose is required. Optional framedPose may be
+ * stored alongside it; framedPose-only SCRs belong in a different store.
  */
 function isLiveScr(element: Element): boolean {
   return element.type === "node" && !element.deleted;

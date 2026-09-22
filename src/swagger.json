@@ -362,6 +362,10 @@
         "geopose": {
           "$ref": "#/definitions/GeoPose"
         },
+        "framedPose": {
+          "type": "object",
+          "description": "Optional opaque SpatialDDS FramedPose. Not validated by this geographic service; stored alongside required geopose."
+        },
         "size": {
           "type": "number"
         },

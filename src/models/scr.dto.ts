@@ -1,19 +1,19 @@
 import { Type } from "class-transformer";
 
 import {
+  Equals,
   IsDefined,
   IsLatitude,
   IsLongitude,
-  IsUrl,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
-  Equals,
+  IsUrl,
   ValidateNested,
 } from "class-validator";
 
 export class PositionDto {
-
   @IsLongitude()
   lon: number;
 
@@ -22,11 +22,9 @@ export class PositionDto {
 
   @IsNumber()
   h: number;
-
 }
 
 export class QuaternionDto {
-
   @IsNumber()
   x: number;
 
@@ -38,11 +36,9 @@ export class QuaternionDto {
 
   @IsNumber()
   w: number;
-
 }
 
 export class GeoPoseDto {
-
   @ValidateNested()
   @IsDefined()
   @Type(() => PositionDto)
@@ -101,6 +97,11 @@ export class ContentDto {
   @IsDefined()
   @Type(() => GeoPoseDto)
   geopose: GeoPoseDto;
+
+  /** Opaque SpatialDDS payload. This service does not validate FramedPose internals. */
+  @IsOptional()
+  @IsObject()
+  framedPose?: any;
 
   @IsNumber()
   @IsOptional()

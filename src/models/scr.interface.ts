@@ -1,4 +1,3 @@
-
 export interface Position {
   lon: number;
   lat: number;
@@ -36,6 +35,8 @@ export interface Content {
   placekey?: string;
   refs?: Ref[];
   geopose: GeoPose;
+  /** Opaque SpatialDDS FramedPose; not interpreted by this geographic service. */
+  framedPose?: any;
   size?: number;
   bbox?: string;
   definitions?: Def[];
