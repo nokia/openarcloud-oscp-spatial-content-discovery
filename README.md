@@ -84,7 +84,7 @@ PORT=8032
 ```
 
 **Variable Reference:**
-- `KAPPA_CORE_DIR`: Local directory for persistent kappa-core database files. This folder is mounted as a bind volume into the container at `/app/${KAPPA_CORE_DIR}`.
+- `KAPPA_CORE_DIR`: Local directory for persistent kappa-core database files. This folder is bind-mounted into the container at `/app/${KAPPA_CORE_DIR}` and is not copied into the image. On startup, the container makes that directory readable by every user, so a host account can back it up.
 - `AUTH_REQUIRED`: When `true` (the default), mutating and tenant routes require a JWT. Set to `false` only for local/dev; writes then use tenant `noauthtest`.
 - `AUTH0_ISSUER`: Auth0 OAuth provider issuer URL.
 - `AUTH0_AUDIENCE`: Auth0 audience identifier (typically your service URL).
