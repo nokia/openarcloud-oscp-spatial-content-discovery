@@ -9,7 +9,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  IsUrl,
+  Matches,
   ValidateNested,
 } from "class-validator";
 
@@ -54,8 +54,16 @@ export class RefDto {
   @IsString()
   contentType: string;
 
-  @IsUrl()
-  url: URL;
+  /**
+   * Absolute http(s) URL, or a root-relative path in the client public folder
+   * (for example `/media/pointclouds/cloud1.ply`).
+   * Keep this pattern aligned with `refUrlPattern` in scd-access.
+   */
+  @Matches(/^(https?:\/\/[^\s]+|\/(?!\/)[\w\-./%~]+)$/, {
+    message:
+      "url must be an absolute http(s) URL or a root-relative client public path",
+  })
+  url: string;
 }
 
 export class DefDto {

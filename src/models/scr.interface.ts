@@ -18,7 +18,8 @@ export interface GeoPose {
 
 export interface Ref {
   contentType: string;
-  url: URL;
+  /** Absolute http(s) URL, or a root-relative path in the client public folder. */
+  url: string;
 }
 
 export interface Def {

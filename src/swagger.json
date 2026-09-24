@@ -344,7 +344,11 @@
         "required": ["contentType", "url"],
         "properties": {
           "contentType": { "type": "string" },
-          "url": { "type": "string", "format": "uri" }
+          "url": {
+            "type": "string",
+            "description": "Absolute http(s) URL, or a root-relative path in the client public folder (for example /media/pointclouds/cloud1.ply).",
+            "pattern": "^(https?:\\/\\/[^\\s]+|\\/(?!\\/)[\\w\\-./%~]+)$"
+          }
         }
       },
       "Def": {
