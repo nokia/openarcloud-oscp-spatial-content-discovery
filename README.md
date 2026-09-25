@@ -31,8 +31,10 @@ AUTH0_ISSUER=https://scd-oscp.us.auth0.com/
 AUTH0_AUDIENCE=https://scd.oscp.cloudpose.io
 GEOZONE="geo3"
 TOPICS="transit,history,entertainment"
-PORT=3000
+PORT=8032
 ```
+
+The service listens on port **8032** when `PORT` is unset. Set `PORT` to use a different port.
 
 Start the Spatial Content Discovery service (development)
 
@@ -50,7 +52,7 @@ npm start
 
 
 ```
-http://localhost:3000/swagger/
+http://localhost:8032/swagger/
 ```
 
 ![Swagger image](images/swagger.png?raw=true)
@@ -79,7 +81,7 @@ GEOZONE="geo3"
 # Comma-separated content topics handled by this node
 TOPICS="transit,history,entertainment"
 
-# Service port (used in container and exported to host)
+# Service port (default: 8032). Docker publishes the same port on the host.
 PORT=8032
 ```
 
@@ -90,7 +92,7 @@ PORT=8032
 - `AUTH0_AUDIENCE`: Auth0 audience identifier (typically your service URL).
 - `GEOZONE`: GeoZone namespace prepended to each swarm topic.
 - `TOPICS`: Comma-separated list of content topics managed by this service instance. `GET /topics` returns this list as lowercase JSON, so each client asks the server it is using.
-- `PORT`: The port the Node.js service listens on inside the container and exported to the host.
+- `PORT`: The port the Node.js service listens on. Default: `8032` when unset. Docker publishes that same port on the host.
 
 ## Search Logic
 
