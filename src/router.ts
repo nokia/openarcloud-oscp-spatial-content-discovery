@@ -54,6 +54,10 @@ class Router {
       res.status(200).json({ status: "ok" });
     });
 
+    router.get("/topics", (_req: express.Request, res: express.Response) => {
+      res.status(200).json(Service.listTopics());
+    });
+
     router.get(
       "/tenant/scrs/:topic",
       ...(AUTH_REQUIRED ? [checkJwt, jwtAuthz(["read:scrs"])] : []),

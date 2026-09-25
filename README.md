@@ -89,7 +89,7 @@ PORT=8032
 - `AUTH0_ISSUER`: Auth0 OAuth provider issuer URL.
 - `AUTH0_AUDIENCE`: Auth0 audience identifier (typically your service URL).
 - `GEOZONE`: GeoZone namespace prepended to each swarm topic.
-- `TOPICS`: Comma-separated list of content topics managed by this service instance.
+- `TOPICS`: Comma-separated list of content topics managed by this service instance. `GET /topics` returns this list as lowercase JSON, so each client asks the server it is using.
 - `PORT`: The port the Node.js service listens on inside the container and exported to the host.
 
 ## Search Logic

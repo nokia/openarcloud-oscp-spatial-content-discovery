@@ -28,6 +28,27 @@
         }
       }
     },
+    "/topics": {
+      "get": {
+        "summary": "List content topics served by this SCD instance",
+        "operationId": "listTopics",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Lowercase topic names from this instance's TOPICS configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "example": ["entertainment", "history", "transit"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/scrs/{topic}": {
       "get": {
         "summary": "Get SCRs covering an H3 index (and optional filters)",

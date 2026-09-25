@@ -28,10 +28,14 @@ function requireEnv(name: string): string {
 
 const KAPPA_CORE_DIR: string = requireEnv("KAPPA_CORE_DIR");
 const GEOZONE: string = requireEnv("GEOZONE");
-let TOPICS: string[] = requireEnv("TOPICS").split(",");
-TOPICS = TOPICS.map(function (x) {
-  return x.toLowerCase();
-});
+const TOPICS: string[] = requireEnv("TOPICS")
+  .split(",")
+  .map((topic) => topic.trim().toLowerCase())
+  .filter((topic) => topic.length > 0);
+
+export function listTopics(): string[] {
+  return [...TOPICS];
+}
 
 function flattenValidationErrors(
   errors: ValidationError[],
